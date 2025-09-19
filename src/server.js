@@ -8,7 +8,7 @@ import { getAllContacts, getContactById } from './services/contacts.js';
 
 const PORT = Number(process.env.PORT);
 
-export function startServer() {
+export function setupServer() {
 const app = express();
 app.use(express.json());
 app.use(cors());
