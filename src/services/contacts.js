@@ -15,4 +15,17 @@ export const createContact = async (payload) => {
     return newContact;
 };
 
+export const putchContact = async (contactId, payload) => {
+  const contact = await ContactCollection.findByIdAndUpdate(contactId, payload, { new: true });
+  return contact;
+};    
+
+export const deleteContact = async (contactId) => {
+    const contact = await ContactCollection.findByIdAndDelete(contactId);   
+    return contact;
+};
+
+
+
+
 

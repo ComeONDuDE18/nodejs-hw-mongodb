@@ -1,4 +1,4 @@
-import { getAllContacts, getContactById, createContact } from "../services/contacts.js";
+import { getAllContacts, getContactById, createContact, putchContact, deleteContact } from "../services/contacts.js";
 import createHttpError from 'http-errors';
 
 export const getAllContactsController = async (req, res) => {
@@ -31,6 +31,37 @@ const contact = await createContact(req.body);
     data: contact,
   });
 };
+
+export const putchContactController = async (req, res, next) => {
+  const { contactId } = req.params;
+  const result = await putchContact(contactId, req.body);
+
+    if (!result) {
+      next (createHttpError(404, 'Contact not found'));
+      return;
+    }
+    res.json({
+      status: 200,
+      message: `Successfully updated contact with id ${contactId}!`,
+      data: result.contact,
+    });
+  };    
+
+  export const deleteContactController = async (req, res, next) => {
+    const { contactId } = req.params;
+    const result = await deleteContact(contactId);
+
+      if (!result) {
+        next (createHttpError(404, 'Contact not found'));
+        return;
+      }     
+      res.json({
+        status: 200,
+        message: `Successfully deleted contact with id ${contactId}!`,
+      });
+    };  
+
+
 
 
 
