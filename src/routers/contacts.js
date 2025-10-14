@@ -2,7 +2,7 @@ import {Router} from "express";
 import { getAllContactsController, getContactByIdController, createContactController, putchContactController, deleteContactController }  from '../controllers/contacts.js';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import { validateBody } from "../middlewares/validateBody.js";
-import { contactSchema } from "../models/contact.js";
+import { contactSchema } from "../models/contacts.js";
 import { isValidId } from "../middlewares/isValidId.js";
 
 const contactsRouter = Router();
