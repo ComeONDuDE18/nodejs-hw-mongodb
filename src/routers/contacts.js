@@ -3,7 +3,7 @@ import { getAllContactsController, getContactByIdController, createContactContro
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import { validateBody } from "../middlewares/validateBody.js";
 import { contactSchema } from "../db/models/contacts.js";
-import { isValidId } from "../middlewares/isValidId.js";
+import { isValidId } from "../middlewares/isValid.js";
 
 const contactsRouter = Router();
 
