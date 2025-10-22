@@ -15,6 +15,7 @@ import { parseFilterParams } from '../utils/parseFilterParams.js';
     sortBy,
     sortOrder,
     filter,
+    userId: req.user._id,
   });
 
   res.json({
