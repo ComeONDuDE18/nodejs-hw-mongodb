@@ -3,7 +3,7 @@ import { getContactByIdController, createContactController, putchContactControll
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import { validateBody } from "../middlewares/validateBody.js";
 import { createContactSchema, updateContactSchema } from "../validation/contacts.js";
-import { isValidId } from "../middlewares/isValidId.js";
+import { isValidId } from "../middlewares/isValidId.js";    
 
 const contactsRouter = Router();
 
