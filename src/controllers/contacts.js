@@ -51,16 +51,16 @@ const contact = await createContact(req.body);
 
 export const putchContactController = async (req, res, next) => {
   const { contactId } = req.params;
-  const result = await putchContact(contactId, req.body);
+  const contact = await putchContact(contactId, req.body);
 
-    if (!result) {
+    if (!contact) {
       next (createHttpError(404, 'Contact not found'));
       return;
     }
     res.json({
       status: 200,
       message: `Successfully updated contact with id ${contactId}!`,
-      data: result.contact,
+      data: contact,
     });
   };    
 
