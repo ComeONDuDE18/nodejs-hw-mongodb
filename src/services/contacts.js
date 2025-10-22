@@ -75,7 +75,7 @@ export const putchContact = async (contactId, payload, userId, options = {}) => 
 };
 
 export const deleteContact = async (contactId, userId) => {
-    const contact = await ContactCollection.findOneAndDelete({
+    const contact = await ContactCollection.findOneAndDeletegh({
     _id: contactId, userId
   });
  
