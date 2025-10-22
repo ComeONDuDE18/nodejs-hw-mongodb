@@ -10,18 +10,29 @@ export const getAllContacts = async ({
   perPage = 10,
   sortOrder = SORT_ORDER.ASC,
   sortBy = '_id',
+  filter = {},
+  userId,
 }) => {
   const limit = perPage;
   const skip = (page - 1) * perPage;
+ const contactsQuery = ContactCollection.find({ userId });
 
-  
-  const contactsQuery = ContactCollection.find();
+  if (filter.type) {
+    contactsQuery.where("contactType").equals(filter.type);
+  }
+
+ 
+  if (typeof filter.value !== "undefined") {
+    contactsQuery.where("isFavourite").equals(filter.value);
+  }
+
   const [contactsCount, contacts] = await Promise.all([
-    ContactCollection.find().merge(contactsQuery).countDocuments(),
+    ContactCollection.find({ userId }).merge(contactsQuery).countDocuments(),
     contactsQuery
       .skip(skip)
       .limit(limit)
       .sort({ [sortBy]: sortOrder })
+      .lean()
       .exec(),
   ]);
 
@@ -34,8 +45,8 @@ export const getAllContacts = async ({
 };
 
 
-export const getContactById = async (contactId) => {
-    const contact = await ContactCollection.findById(contactId);
+export const getContactById = async (contactId, userId) => {
+    const contact = await ContactCollection.findById(contactId, userId);
     return contact;
 }   ;
 
@@ -44,13 +55,30 @@ export const createContact = async (payload) => {
     return newContact;
 };
 
-export const putchContact = async (contactId, payload) => {
-  const contact = await ContactCollection.findByIdAndUpdate(contactId, payload, { new: true });
-  return contact;
-};    
+export const putchContact = async (contactId, payload, userId, options = {}) => {
+  const contact = await ContactCollection.findOneAndUpdate(
+    { _id: contactId, userId},
+    payload,
+    {
+      new: true,
+      includeResultMetadata: true,
+      ...options,
+    },
+  );
 
-export const deleteContact = async (contactId) => {
-    const contact = await ContactCollection.findByIdAndDelete(contactId);   
+  if (!contact || !contact.value) return null;
+
+  return {
+    contact: contact.value,
+    isNew: Boolean(contact?.lastErrorObject?.upserted),
+  };
+};
+
+export const deleteContact = async (contactId, userId) => {
+    const contact = await ContactCollection.findOneAndDelete({
+    _id: contactId, userId
+  });
+ 
     return contact;
 };
 

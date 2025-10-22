@@ -4,10 +4,11 @@ import cors from 'cors';
 import { getEnvVar } from './utils/getEnvVar.js';
 import {errorHandler} from './middlewares/errorHandler.js';
 import {notFoundHandler} from './middlewares/notFoundHandler.js';
+import cookieParser from 'cookie-parser';
 
 
 
-import studentsRouter from './routers/contacts.js';
+import router from './routers/index.js';
 
 
 const PORT = Number(getEnvVar('PORT', '3000'));
@@ -17,6 +18,7 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
+app.use(cookieParser());
 
 app.use(
     pino({
@@ -33,7 +35,7 @@ app.get('/', (req, res) => {
 });
 
 
-app.use(studentsRouter);
+app.use(router);
 
 app.use(notFoundHandler);
 app.use(errorHandler);
