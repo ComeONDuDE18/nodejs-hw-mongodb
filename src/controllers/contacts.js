@@ -28,7 +28,8 @@ import { parseFilterParams } from '../utils/parseFilterParams.js';
 
 export const getContactByIdController = async (req, res, next) => {
     const { contactId } = req.params;
-    const contact = await getContactById(contactId);
+    const { _id: userId } = req.user;
+    const contact = await getContactById(contactId, userId);
    if (!contact) {
     throw createHttpError(404, 'Contact not found');
   }
@@ -41,7 +42,9 @@ res.json({
 };
 
 export const createContactController = async (req, res) => {
-const contact = await createContact(req.body);
+const { _id: userId } = req.user;
+const contact = await createContact({...req.body, userId });
+
 
   res.status(201).json({
     status: 201,
@@ -52,7 +55,8 @@ const contact = await createContact(req.body);
 
 export const putchContactController = async (req, res, next) => {
   const { contactId } = req.params;
-  const contact = await putchContact(contactId, req.body);
+  const { _id: userId } = req.user;
+  const contact = await putchContact(userId, contactId, req.body);
 
     if (!contact) {
       next (createHttpError(404, 'Contact not found'));
@@ -66,8 +70,9 @@ export const putchContactController = async (req, res, next) => {
   };    
 
   export const deleteContactController = async (req, res, next) => {
+    const { _id: userId } = req.user;
     const { contactId } = req.params;
-    const result = await deleteContact(contactId);
+    const result = await deleteContact(contactId, userId);
 
       if (!result) {
         next (createHttpError(404, 'Contact not found'));
