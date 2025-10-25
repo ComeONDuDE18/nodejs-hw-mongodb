@@ -5,6 +5,11 @@ import { SessionsCollection } from "../db/models/session.js";
 import { randomBytes } from 'crypto';
 import { FIFTEEN_MINUTES, ONE_DAY } from '../constants/index.js';
 
+import jwt from 'jsonwebtoken';
+import { SMTP } from '../constants/index.js';
+import { getEnvVar } from '../utils/getEnvVar.js';
+import { sendEmail } from '../utils/sendMail.js';
+
 
 
 export const registerUser = async (payload) => {
@@ -75,4 +80,26 @@ export const refreshUsersSession = async ({ sessionId, refreshToken }) => {
         userId: session.userId,
         ...newSession
     });
+};
+
+export const requestResetToken = async (email) => {
+    const user = await UsersCollection.findOne({ email });
+    if (!user) throw createHttpError(404, 'User not found');
+    const resetToken = jwt.sign(
+    {
+      sub: user._id,
+      email,
+    },
+    getEnvVar('JWT_SECRET'),
+    {
+      expiresIn: '15m',
+    },
+  );
+
+  await sendEmail({
+    from: getEnvVar(SMTP.SMTP_FROM),
+    to: email,
+    subject: 'Reset your password',
+    html: `<p>Click <a href="${resetToken}">here</a> to reset your password!</p>`,
+  });
 };
