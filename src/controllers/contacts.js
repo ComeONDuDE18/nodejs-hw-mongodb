@@ -4,6 +4,13 @@ import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
 import { parseFilterParams } from '../utils/parseFilterParams.js';
 import { requestResetToken } from "../services/auth.js";
+import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
+import { getEnvVar } from '../utils/getEnvVar.js';
+import { saveFileToUploadDir } from '../utils/saveFileToUploadDir.js';
+
+
+
+
 
 
 
@@ -58,7 +65,21 @@ const contact = await createContact({...req.body, userId });
 export const putchContactController = async (req, res, next) => {
   const { contactId } = req.params;
   const { _id: userId } = req.user;
-  const contact = await putchContact(userId, contactId, req.body);
+  const photo = req.file;
+  let photoUrl;
+
+  if (photo) {
+    if (getEnvVar('ENABLE_CLOUDINARY') === 'true') {
+      photoUrl = await saveFileToCloudinary(photo);
+    } else {
+      photoUrl = await saveFileToUploadDir(photo);
+    }
+  }
+
+  const contact = await putchContact(contactId,userId, {
+    ...req.body,
+    photo: photoUrl,
+  });
 
     if (!contact) {
       next (createHttpError(404, 'Contact not found'));
