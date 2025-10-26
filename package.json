@@ -33,6 +33,7 @@
     "mongodb": "^6.20.0",
     "mongoose": "^8.18.1",
     "multer": "^2.0.2",
+    "muster": "^0.9.3",
     "nodemailer": "^7.0.10",
     "pino-http": "^10.5.0",
     "router": "^2.2.0"
