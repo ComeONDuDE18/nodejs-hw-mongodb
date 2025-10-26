@@ -1,0 +1,88 @@
+tags:
+  - Contacts
+summary: Udate contact
+operationId: updateContact
+description: Update contact
+security:
+  - bearerAuth: []
+parameters:
+  - in: path
+    name: id
+    required: true
+    schema:
+      type: string
+      example: 68efd41636a23320bb4ef586
+requestBody:
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        properties:
+          name:
+           type: string
+           description: Contact name
+           example: John Doe
+          phoneNumber:
+           type: string
+           description: Contact phone number
+           example: +380000000000
+          email:
+           type: string
+           description: Contact email
+           example: johndoe@mail.com
+          isFavourite:
+           type: boolean
+           description: Contact is favourite
+           default: false
+           example: true
+          contactType:
+           type: string
+           description: Contact type
+           enum: ['work', 'home', 'personal']
+           example: work
+          photo:
+           type: string
+           format: binary
+           description: Contact photo
+           default: null
+           example: https://res.cloudinary.com/dha4xvgfi/image/upload/v1759947947/aclxd7sbpsrb8hviowbe.jpg
+responses:
+  '200':
+    description: Successfully patched a contact!
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Successfully patched a contact!
+            data:
+             $ref: ../../../components/schemas/contact.yaml
+  '401':
+     $ref: ../../../components/responses/401.yaml
+  '404':
+    description: Contact not found
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+          properties:
+            status:
+              type: integer
+              example: 404
+            message:
+              type: string
+              example: Contact not found
+  '500':
+    $ref: ../../../components/responses/500.yaml
