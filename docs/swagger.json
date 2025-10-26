@@ -7,7 +7,7 @@
   },
   "servers": [
     { "url": "http://localhost:3000", "description": "Local development server" },
-    { "url": "https://nodejs-hw-mongodb-7-1rz.onrender.com", "description": "Production server" }
+    { "url": "https://nodejs-hw-mongodb-7-colb.onrender.com", "description": "Production server" }
   ],
   "tags": [
     { "name": "Auth", "description": "User authentication and password recovery" },
