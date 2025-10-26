@@ -23,15 +23,21 @@ const contactSchema = new Schema({
         enum: ['work', 'home', 'personal'],
       default: 'personal',
   },
-  userId: {
+    userId: {
       type: Schema.Types.ObjectId,
       ref: "users",
       required: true,
+    }, 
+    photo: {
+      type: String,
+      required: false,
+      default: null,
     },
-},
+    },
     {
          timestamps: true,
-    }
+         versionKey: false,
+    },
 );
 
 
