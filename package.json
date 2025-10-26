@@ -11,7 +11,6 @@
     "build": "npm run build-docs",
     "build-docs": "redocly bundle docs/openapi.yaml --ext json -o docs/swagger.json",
     "preview-docs": "redocly preview-docs"
-  
   },
   "keywords": [],
   "author": "Alexander Repeta <a.repeta@goit.global>",
@@ -31,6 +30,7 @@
     "cors": "^2.8.5",
     "dotenv": "^17.2.2",
     "express": "^5.1.0",
+    "google-auth-library": "^10.4.2",
     "handlebars": "^4.7.8",
     "http-errors": "^2.0.0",
     "joi": "^18.0.1",
