@@ -58,13 +58,13 @@ export const createContact = async (payload) => {
 
 export const putchContact = async (contactId, payload, userId, options = {}) => {
   const contact = await ContactCollection.findOneAndUpdate(
-    { _id: contactId, userId},
+    { _id: contactId, userId },
     payload,
     {
-      new: true,
+      new: true, 
       includeResultMetadata: true,
       ...options,
-    },
+    }
   );
 
   if (!contact || !contact.value) return null;

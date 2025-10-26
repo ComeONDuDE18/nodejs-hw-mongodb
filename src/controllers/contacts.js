@@ -76,21 +76,25 @@ export const putchContactController = async (req, res, next) => {
     }
   }
 
-  const contact = await putchContact(contactId,userId, {
+  const payload = {
     ...req.body,
-    photo: photoUrl,
-  });
+    ...(photoUrl && { photo: photoUrl }),
+  };
 
-    if (!contact) {
-      next (createHttpError(404, 'Contact not found'));
-      return;
-    }
-    res.json({
-      status: 200,
-      message: `Successfully updated contact with id ${contactId}!`,
-      data: contact,
-    });
-  };    
+  const contact = await putchContact(contactId, payload, userId);
+
+  if (!contact) {
+    next(createHttpError(404, 'Contact not found'));
+    return;
+  }
+
+  res.json({
+    status: 200,
+    message: `Successfully updated contact with id ${contactId}!`,
+    data: contact.contact,
+  });
+};
+ 
 
   export const deleteContactController = async (req, res, next) => {
     const { _id: userId } = req.user;
