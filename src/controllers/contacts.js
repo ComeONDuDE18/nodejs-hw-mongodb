@@ -52,8 +52,16 @@ res.json({
 
 export const createContactController = async (req, res) => {
 const { _id: userId } = req.user;
-const contact = await createContact({...req.body, userId });
+const photo = req.file;
+  let photoUrl;
 
+  if (photo) {
+    if(getEnvVar('ENABLE_CLOUDINARY') === 'true')
+    { photoUrl = await saveFileToCloudinary(photo); } else {
+      photoUrl = await saveFileToUploadDir(photo);
+   }
+  }
+  const contact = await createContact({...req.body, photo: photoUrl, userId});
 
   res.status(201).json({
     status: 201,
@@ -61,6 +69,7 @@ const contact = await createContact({...req.body, userId });
     data: contact,
   });
 };
+
 
 export const putchContactController = async (req, res, next) => {
   const { contactId } = req.params;
