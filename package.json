@@ -41,6 +41,7 @@
     "muster": "^0.9.3",
     "nodemailer": "^7.0.10",
     "pino-http": "^10.5.0",
-    "router": "^2.2.0"
+    "router": "^2.2.0",
+    "swagger-ui-express": "^5.0.1"
   }
 }
